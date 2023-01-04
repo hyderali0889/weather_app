@@ -1,0 +1,75 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "2:427336182165892068",
+      "lastPropertyId": "9:5406310281028677344",
+      "name": "WeatherModelObjectBox",
+      "properties": [
+        {
+          "id": "1:2230692901203195184",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5573760367898116819",
+          "name": "tempC1",
+          "type": 6
+        },
+        {
+          "id": "3:4181741539906067762",
+          "name": "tempC2",
+          "type": 6
+        },
+        {
+          "id": "4:532111584920823921",
+          "name": "tempC3",
+          "type": 6
+        },
+        {
+          "id": "9:5406310281028677344",
+          "name": "theme",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:427336182165892068",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    64066134282165742
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    4784581672183369026,
+    2744800474288260779,
+    8625939283706865546,
+    132076974877930364,
+    2716626961604356253,
+    6887995002721336377,
+    8621501264502193062,
+    4329368223931562233,
+    6477151710208542996,
+    4706446122322395198,
+    4132311396880457956,
+    2099251978588087948,
+    4251566893806913185,
+    3317499356602479563,
+    8287564820073328455,
+    7955823399980311421,
+    8400700868489427036,
+    4276075180856658761,
+    1400278501694472358,
+    8761142226747617627
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}
