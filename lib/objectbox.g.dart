@@ -14,7 +14,7 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'Data/models/object_box_model.dart';
+import 'models/object_box_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -22,7 +22,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(2, 427336182165892068),
       name: 'WeatherModelObjectBox',
-      lastPropertyId: const IdUid(9, 5406310281028677344),
+      lastPropertyId: const IdUid(13, 2025386233541291699),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -31,23 +31,28 @@ final _entities = <ModelEntity>[
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 5573760367898116819),
-            name: 'tempC1',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 4181741539906067762),
-            name: 'tempC2',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 532111584920823921),
-            name: 'tempC3',
-            type: 6,
-            flags: 0),
-        ModelProperty(
             id: const IdUid(9, 5406310281028677344),
             name: 'theme',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(10, 8749680906992483199),
+            name: 'latitude',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(11, 860145644760246600),
+            name: 'longitude',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(12, 1905216108230878781),
+            name: 'tempInC',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(13, 2025386233541291699),
+            name: 'city',
             type: 9,
             flags: 0)
       ],
@@ -101,7 +106,10 @@ ModelDefinition getObjectBoxModel() {
         8400700868489427036,
         4276075180856658761,
         1400278501694472358,
-        8761142226747617627
+        8761142226747617627,
+        5573760367898116819,
+        4181741539906067762,
+        532111584920823921
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -119,12 +127,14 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (WeatherModelObjectBox object, fb.Builder fbb) {
           final themeOffset = fbb.writeString(object.theme);
-          fbb.startTable(10);
+          final cityOffset = fbb.writeString(object.city);
+          fbb.startTable(14);
           fbb.addInt64(0, object.id);
-          fbb.addInt64(1, object.tempC1);
-          fbb.addInt64(2, object.tempC2);
-          fbb.addInt64(3, object.tempC3);
           fbb.addOffset(8, themeOffset);
+          fbb.addInt64(9, object.latitude);
+          fbb.addInt64(10, object.longitude);
+          fbb.addBool(11, object.tempInC);
+          fbb.addOffset(12, cityOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -133,15 +143,17 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = WeatherModelObjectBox(
-              tempC1:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0),
-              tempC2:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
-              tempC3:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0),
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              city: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 28, ''),
+              latitude:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0),
+              longitude:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 24, 0),
+              tempInC: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 26, false),
               theme: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 20, ''));
+                  .vTableGet(buffer, rootOffset, 20, ''),
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0));
 
           return object;
         })
@@ -156,19 +168,23 @@ class WeatherModelObjectBox_ {
   static final id =
       QueryIntegerProperty<WeatherModelObjectBox>(_entities[0].properties[0]);
 
-  /// see [WeatherModelObjectBox.tempC1]
-  static final tempC1 =
-      QueryIntegerProperty<WeatherModelObjectBox>(_entities[0].properties[1]);
-
-  /// see [WeatherModelObjectBox.tempC2]
-  static final tempC2 =
-      QueryIntegerProperty<WeatherModelObjectBox>(_entities[0].properties[2]);
-
-  /// see [WeatherModelObjectBox.tempC3]
-  static final tempC3 =
-      QueryIntegerProperty<WeatherModelObjectBox>(_entities[0].properties[3]);
-
   /// see [WeatherModelObjectBox.theme]
   static final theme =
-      QueryStringProperty<WeatherModelObjectBox>(_entities[0].properties[4]);
+      QueryStringProperty<WeatherModelObjectBox>(_entities[0].properties[1]);
+
+  /// see [WeatherModelObjectBox.latitude]
+  static final latitude =
+      QueryIntegerProperty<WeatherModelObjectBox>(_entities[0].properties[2]);
+
+  /// see [WeatherModelObjectBox.longitude]
+  static final longitude =
+      QueryIntegerProperty<WeatherModelObjectBox>(_entities[0].properties[3]);
+
+  /// see [WeatherModelObjectBox.tempInC]
+  static final tempInC =
+      QueryBooleanProperty<WeatherModelObjectBox>(_entities[0].properties[4]);
+
+  /// see [WeatherModelObjectBox.city]
+  static final city =
+      QueryStringProperty<WeatherModelObjectBox>(_entities[0].properties[5]);
 }

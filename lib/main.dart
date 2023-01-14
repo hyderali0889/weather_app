@@ -1,10 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:objectbox/objectbox.dart';
-import 'package:weather_app/Data/models/object_box_model.dart';
-import 'package:weather_app/UI/Routes/app_routes.dart';
+import 'package:weather_app/Theme/theme_file.dart';
+import 'package:weather_app/helper/object_box_helper.dart';
+import 'package:weather_app/models/object_box_model.dart';
+import 'package:weather_app/utils/page_routes.dart';
 
-import 'Data/helper/object_box_helper.dart';
+import 'Routes/app_routes.dart';
 
 late ObjectBox objectBox;
 Future<void> main() async {
@@ -14,8 +16,6 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-
-
   const MyApp({super.key});
 
   @override
@@ -23,24 +23,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-      static final ValueNotifier<ThemeMode> themeListner = ValueNotifier(ThemeMode.system);
-
   @override
   Widget build(BuildContext context) {
-        Box<WeatherModelObjectBox> weatherData = objectBox.store.box<WeatherModelObjectBox>();
+    Box<WeatherModelObjectBox> weatherData =
+        objectBox.store.box<WeatherModelObjectBox>();
 
-    AppRoutes appRoutes = AppRoutes();
-    return ValueListenableBuilder(
-      valueListenable:themeListner ,
-      builder: (context, value, child) {
-        return  MaterialApp(
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: appRoutes.onGeneratedRoute,
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
-        themeMode: weatherData.count() == 0 ? value : weatherData.get(1)!.theme == "light" ? ThemeMode.light : ThemeMode.dark,
-      );
-       });
-
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      getPages: AppRoutes.routes,
+      initialRoute: weatherData.count() == 0 ? PageRoutes().splashSceen :PageRoutes().homeSceen ,
+      theme: Themes().lightTheme,
+      darkTheme: Themes().darkTheme,
+      themeMode: weatherData.count() == 0
+          ? ThemeMode.light
+          : weatherData.get(1)!.theme == "light"
+              ? ThemeMode.light
+              : ThemeMode.dark,
+    );
   }
 }
