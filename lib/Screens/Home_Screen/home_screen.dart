@@ -12,6 +12,8 @@ import '../../../objectbox.g.dart';
 import '../../models/object_box_model.dart';
 import '../../models/weather_model_new.dart';
 import '../../utils/api_call.dart';
+import '../../utils/page_routes.dart';
+import '../Splash_Screen/splash_screen_components.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,7 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   apiData() async {
-    Box<WeatherModelObjectBox> weatherData =
+
+ try {
+
+   Box<WeatherModelObjectBox> weatherData =
         objectBox.store.box<WeatherModelObjectBox>();
     if (weatherData.get(1)!.longitude != 0) {
       data = await Api().getDataByLat(
@@ -42,6 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
       data = await Api().getDataByCity(weatherData.get(1)!.city, context);
     }
     setState(() {});
+
+ } catch (e) {
+
+   Get.find<HomeController>().addError(true);
+        SplashComponents().showManualDialog(context, "Error! Location Not Found", true);
+        
+
+ }
+
+
   }
 
   @override
@@ -76,20 +91,57 @@ class _HomeScreenState extends State<HomeScreen> {
                               duration: const Duration(seconds: 1),
                               child: !isLifted
                                   ? unLiftedWidget(size, weatherData2)
-                                  : liftedWidget())),
+                                  : liftedWidget(weatherData2))),
                       Expanded(
                           child: Stack(
                         children: [
                           bottomSVG(size),
                           Padding(
                             padding: const EdgeInsets.only(top: 30.0),
-                            child: Column(
-                              children: [
-                                forecast(size, 1),
-                                forecast(size, 2),
-                              ],
+                            child: AnimatedSwitcher(
+                              duration: const Duration(seconds: 1),
+                              child: isLifted
+                                  ? dayDetails(context, size)
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            forecast(size, 1, weatherData2),
+                                            forecast(size, 2, weatherData2),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 30.0),
+                                          child: SizedBox(
+                                            width: size.width,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                FaIcon(
+                                                  FontAwesomeIcons
+                                                      .lightAngleDoubleUp,
+                                                  color: context.textTheme
+                                                      .labelLarge!.color,
+                                                ),
+                                                Text(
+                                                  "Swipe Up for Details",
+                                                  style: context
+                                                      .textTheme.labelLarge,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
-                          )
+                          ),
                         ],
                       ))
                     ],
@@ -98,6 +150,159 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
     ));
+  }
+
+  Column dayDetails(BuildContext context, Size size) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Average Humidity",
+                style: context.textTheme.labelLarge,
+              ),
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : "${data!.forecast.forecastday[0].day.avghumidity} %",
+                  context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Max Wind Speed",
+                style: context.textTheme.labelLarge,
+              ),
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : "${data!.forecast.forecastday[0].day.maxwindKph} Kph\n${data!.forecast.forecastday[0].day.maxwindMph} Mph",
+                  context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Min Wind Speed",
+                style: context.textTheme.labelLarge,
+              ),
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : "${data!.forecast.forecastday[0].day.maxwindKph} Kph\n${data!.forecast.forecastday[0].day.maxwindMph} Mph",
+                  context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Chances Of Rain",
+                style: context.textTheme.labelLarge,
+              ),
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : "${data!.forecast.forecastday[0].day.dailyChanceOfRain} %",
+                  context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Chances Of Snow",
+                style: context.textTheme.labelLarge,
+              ),
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : "${data!.forecast.forecastday[0].day.dailyChanceOfSnow} %",
+                  context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Condition Today",
+                style: context.textTheme.labelLarge,
+              ),
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : data!.forecast.forecastday[0].day.condition.text,
+                  context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Total Precipitation in Mm",
+                style: context.textTheme.labelLarge,
+              ),
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : data!.forecast.forecastday[0].day.totalprecipMm
+                          .toString(),
+                  context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Total Precipitation in In",
+                style: context.textTheme.labelLarge,
+              ),
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : data!.forecast.forecastday[0].day.totalprecipIn
+                          .toString(),
+                  context.textTheme.labelLarge),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
 /*
@@ -141,13 +346,13 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(top: 20.0),
           child: upperRow(size, weatherData2),
         ),
-        minAndMaxTemp(size),
+        minAndMaxTemp(size, weatherData2),
         Container()
       ],
     );
   }
 
-  Padding liftedWidget() {
+  Padding liftedWidget(Box<WeatherModelObjectBox> weatherData2) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
@@ -156,7 +361,11 @@ class _HomeScreenState extends State<HomeScreen> {
           Text(data == null ? '' : data!.location.name),
           Row(
             children: [
-              Text(data == null ? '' : data!.current.tempC.toString()),
+              Text(data == null
+                  ? ''
+                  : weatherData2.get(1)!.tempInC
+                      ? data!.current.tempC.toString()
+                      : data!.current.tempF.toString()),
               Padding(
                 padding: const EdgeInsets.only(left: 4.0, bottom: 30),
                 child: FaIcon(
@@ -204,34 +413,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Row upperRow(Size size, Box<WeatherModelObjectBox> weatherdata) {
-    void changeToLightMode() {
-      WeatherModelObjectBox lightMode = WeatherModelObjectBox(
-        id: 1,
-        city: weatherdata.get(1)!.city,
-        latitude: weatherdata.get(1)!.latitude,
-        longitude: weatherdata.get(1)!.longitude,
-        tempInC: weatherdata.get(1)!.tempInC,
-        theme: "light",
-      );
-      weatherdata.put(lightMode);
-
-      Get.changeThemeMode(ThemeMode.light);
-    }
-
-    void changeToDarkMode() {
-      WeatherModelObjectBox darkMode = WeatherModelObjectBox(
-        id: 1,
-        city: weatherdata.get(1)!.city,
-        latitude: weatherdata.get(1)!.latitude,
-        longitude: weatherdata.get(1)!.longitude,
-        tempInC: weatherdata.get(1)!.tempInC,
-        theme: "dark",
-      );
-      weatherdata.put(darkMode);
-
-      Get.changeThemeMode(ThemeMode.dark);
-    }
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -246,9 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         IconButton(
             onPressed: () {
-              weatherdata.get(1)!.theme != 'light'
-                  ? changeToLightMode()
-                  : changeToDarkMode();
+              Get.toNamed(PageRoutes().settingsSceen, arguments: weatherdata);
             },
             icon: const FaIcon(
               FontAwesomeIcons.lightCog,
@@ -276,7 +455,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ));
   }
 
-  Column minAndMaxTemp(Size size) {
+  Column minAndMaxTemp(Size size, Box<WeatherModelObjectBox> weatherData2) {
     return Column(
       children: [
         Row(
@@ -299,7 +478,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           size,
                           data == null
                               ? ""
-                              : "${data!.forecast.forecastday[0].day.mintempC}",
+                              : "${weatherData2.get(1)!.tempInC ? data!.forecast.forecastday[0].day.mintempC : data!.forecast.forecastday[0].day.mintempF}",
                           context.textTheme.bodyLarge),
                       Padding(
                         padding: const EdgeInsets.only(left: 1.0, bottom: 20),
@@ -316,7 +495,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Row(
               children: [
-                mainShimmer(size, data == null ? "" : "${data!.current.tempC}",
+                mainShimmer(
+                    size,
+                    data == null
+                        ? ""
+                        : weatherData2.get(1)!.tempInC
+                            ? data!.current.tempC.toString()
+                            : data!.current.tempF.toString(),
                     context.textTheme.headlineLarge),
                 Padding(
                   padding: const EdgeInsets.only(left: 4.0, bottom: 50),
@@ -345,7 +530,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           size,
                           data == null
                               ? ""
-                              : "${data!.forecast.forecastday[0].day.maxtempC}",
+                              : "${weatherData2.get(1)!.tempInC ? data!.forecast.forecastday[0].day.maxtempC : data!.forecast.forecastday[0].day.maxtempF}",
                           context.textTheme.bodyLarge),
                       Padding(
                         padding: const EdgeInsets.only(left: 1.0, bottom: 20),
@@ -368,46 +553,40 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  AnimatedSwitcher forecast(Size size, int num) {
+  Padding forecast(
+      Size size, int num, Box<WeatherModelObjectBox> weatherModel) {
     final dateName = data != null
         ? DateFormat('EEEE').format(DateFormat("yyyy-MM-DD")
             .parse(data == null ? "" : data!.forecast.forecastday[num].date))
         : "Loading...";
 
-    return AnimatedSwitcher(
-      duration: const Duration(seconds: 1),
-      child: isLifted
-          ? Container(
-              child: Text("hjhjsdf" , ),
-            )
-          : Padding(
-              padding: const EdgeInsets.only(top: 30.0, left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  mainShimmer(size, data == null ? "" : dateName,
-                      context.textTheme.labelLarge),
-                  Row(
-                    children: [
-                      mainShimmer(
-                          size,
-                          data == null
-                              ? ""
-                              : "${data!.forecast.forecastday[num].day.avgtempC}",
-                          context.textTheme.labelLarge),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 1.0, bottom: 20),
-                        child: FaIcon(
-                          FontAwesomeIcons.circle,
-                          size: 10,
-                          color: context.textTheme.labelLarge!.color,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 30.0, left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          mainShimmer(
+              size, data == null ? "" : dateName, context.textTheme.labelLarge),
+          Row(
+            children: [
+              mainShimmer(
+                  size,
+                  data == null
+                      ? ""
+                      : "${weatherModel.get(1)!.tempInC ? data!.forecast.forecastday[num].day.avgtempC : data!.forecast.forecastday[num].day.avgtempF}",
+                  context.textTheme.labelLarge),
+              Padding(
+                padding: const EdgeInsets.only(left: 1.0, bottom: 20),
+                child: FaIcon(
+                  FontAwesomeIcons.circle,
+                  size: 10,
+                  color: context.textTheme.labelLarge!.color,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

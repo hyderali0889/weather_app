@@ -48,8 +48,7 @@ class SplashComponents {
 
         await FlLocation.getLocation(timeLimit: timeLimit).then((location) {
           locationData = location;
-        }).onError((error, stackTrace) {
-        });
+        }).onError((error, stackTrace) {});
 
         throwToDB(context);
       } else {
@@ -63,12 +62,15 @@ class SplashComponents {
 
       await FlLocation.getLocation(timeLimit: timeLimit).then((location) {
         locationData = location;
-      }).onError((error, stackTrace) {
-      });
+      }).onError((error, stackTrace) {});
 
       throwToDB(context);
     } else {
-      showManualDialog(context, "Location Access / Services Disabled", false);
+      showManualDialog(
+        context,
+        "Location Access / Services Disabled",
+        false,
+      );
     }
   }
 
@@ -96,7 +98,6 @@ class SplashComponents {
 
     weatherData.put(model);
     Get.offAll(const HomeScreen());
-
   }
 
   void throwCityToDB() async {
@@ -135,7 +136,7 @@ class SplashComponents {
 
   Future<dynamic> showManualDialog(context, String errorText, bool update) {
     return showDialog(
-      barrierDismissible: false,
+      barrierDismissible: update,
       context: context,
       builder: ((context) {
         return Dialog(
@@ -155,21 +156,21 @@ class SplashComponents {
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: Text(errorText,
-                          style: Get.textTheme.labelLarge!
+                          style: context.textTheme.bodySmall!
                               .copyWith(color: Colors.red)),
                     ),
                     Text("Please Enter City Name",
-                        style: Get.textTheme.labelLarge),
+                        style: context.textTheme.bodySmall),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: SizedBox(
                         width: 300,
                         child: TextField(
-                          style: Get.textTheme.labelLarge,
+                          style: context.textTheme.bodySmall,
                           onSubmitted: (val) {
                             update ? updateCityinDB() : throwCityToDB();
 
-                            Get.to(const HomeScreen());
+                            Get.offAllNamed('/home');
                           },
                           controller: inputController,
                           decoration: InputDecoration(
@@ -179,7 +180,7 @@ class SplashComponents {
                                   const BorderSide(color: Colors.red, width: 1),
                             ),
                             hintText: "Please Enter City Name",
-                            hintStyle: Get.textTheme.labelLarge,
+                            hintStyle: context.textTheme.bodySmall,
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(14),
                               borderSide:
@@ -195,7 +196,7 @@ class SplashComponents {
                         onTap: () {
                           update ? updateCityinDB() : throwCityToDB();
 
-                          Get.to(const HomeScreen());
+                          Get.offAllNamed('/home');
                         },
                         child: Container(
                           decoration: BoxDecoration(

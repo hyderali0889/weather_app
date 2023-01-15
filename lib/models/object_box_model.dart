@@ -9,14 +9,11 @@ class WeatherModelObjectBox {
   final bool tempInC;
   final String theme;
 
-  WeatherModelObjectBox
-  ({
-    required this.city,
+  WeatherModelObjectBox(
+      {required this.city,
       required this.latitude,
-     required  this.longitude,
-     required  this.tempInC,
-     required  this.theme ,
-      this.id = 0}
-
-       );
+      required this.longitude,
+      required this.tempInC,
+      required this.theme,
+      this.id = 0});
 }

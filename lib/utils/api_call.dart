@@ -11,7 +11,7 @@ class Api extends GetConnect{
     Get.put(HomeController());
   Get.find<HomeController>().addError(false);
     final response = await get('http://api.weatherapi.com/v1/forecast.json?key=4889c63a9205421a83b144841222003&q=$lat,$lng&days=7&aqi=no&alerts=no');
-    if(response.status.hasError){
+    if(response.status.hasError || response.status.isNotFound || response.status.isServerError || response.status.isForbidden ){
          Get.find<HomeController>().addError(true);
       return Future.error(response.statusText!);
     } else {
@@ -24,7 +24,7 @@ class Api extends GetConnect{
       Get.put(HomeController());
   Get.find<HomeController>().addError(false);
     final response = await get('http://api.weatherapi.com/v1/forecast.json?key=4889c63a9205421a83b144841222003&q=$city&days=7&aqi=no&alerts=no');
-    if(response.status.hasError){
+    if(response.status.hasError || response.status.isNotFound || response.status.isServerError || response.status.isForbidden  ){
          Get.find<HomeController>().addError(true);
         SplashComponents().showManualDialog(context, "Error! Location Not Found", true);
       return Future.error(response.statusText!);

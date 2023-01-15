@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
       theme: Themes().lightTheme,
       darkTheme: Themes().darkTheme,
       themeMode: weatherData.count() == 0
-          ? ThemeMode.light
+          ? ThemeMode.system
           : weatherData.get(1)!.theme == "light"
               ? ThemeMode.light
               : ThemeMode.dark,
