@@ -1,16 +1,12 @@
-# weather_app
+# Weather App
 
-A new Flutter project.
+A Flutter Application is created by Hayder Ali as a portfolio project. This App is a proper Weather App which is ads free and very simple to use.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This app is build for Android.
 
-A few resources to get you started if this is your first Flutter project:
+A few resources to get you started :
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Android App](https://drive.google.com/file/d/1-_wHtRKKHun2oc8slY-Xc-E_R7kxY8XI/view?usp=share_link)
+- [Github Repo](https://github.com/hyderali0889/weather_app)
