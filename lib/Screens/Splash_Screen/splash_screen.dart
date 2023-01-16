@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/Screens/Splash_Screen/splash_screen_components.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -13,6 +12,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation sizeAnimation;
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> getLocationData() async {
-    await SplashComponents().getLoc(context);
+    await SplashComponents().getLoc(context, controller);
   }
 
   // Function for Animations

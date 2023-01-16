@@ -33,6 +33,7 @@ class _MyAppState extends State<MyApp> {
       getPages: AppRoutes.routes,
       initialRoute: weatherData.count() == 0 ? PageRoutes().splashSceen :PageRoutes().homeSceen ,
       theme: Themes().lightTheme,
+      title: "Weather App",
       darkTheme: Themes().darkTheme,
       themeMode: weatherData.count() == 0
           ? ThemeMode.system

@@ -16,6 +16,8 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   Box<WeatherModelObjectBox> box = Get.arguments;
+  TextEditingController inputController = TextEditingController();
+
 
   void changeToLightMode() {
     WeatherModelObjectBox lightMode = WeatherModelObjectBox(
@@ -157,7 +159,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: InkWell(
                   onTap: () {
                     SplashComponents()
-                        .showManualDialog(context, "Enter City Name", true);
+                        .showManualDialog(context, "Enter City Name", true , inputController);
                   },
                   child: Container(
                     width: 300,

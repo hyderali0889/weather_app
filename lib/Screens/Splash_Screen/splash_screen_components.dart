@@ -41,7 +41,7 @@ class SplashComponents {
      YboodP 888888   88     88   88 88  Y8  YboodP     88ood8  YbodP   YboodP dP""""Yb   88   88  YbodP  88  Y8
 */
 
-  Future<void> getLoc(context) async {
+  Future<void> getLoc(context , TextEditingController controller) async {
     try {
       if (await _checkAndRequestPermission()) {
         const timeLimit = Duration(seconds: 10);
@@ -52,10 +52,10 @@ class SplashComponents {
 
         throwToDB(context);
       } else {
-        showManualDialog(context, "Location Access / Services Disabled", false);
+        showManualDialog(context, "Location Access / Services Disabled", false , controller);
       }
     } catch (e) {
-      showManualDialog(context, "Location Access / Services Disabled", false);
+      showManualDialog(context, "Location Access / Services Disabled", false , controller);
     }
     if (await _checkAndRequestPermission()) {
       const timeLimit = Duration(seconds: 10);
@@ -70,6 +70,7 @@ class SplashComponents {
         context,
         "Location Access / Services Disabled",
         false,
+        controller
       );
     }
   }
@@ -100,7 +101,7 @@ class SplashComponents {
     Get.offAll(const HomeScreen());
   }
 
-  void throwCityToDB() async {
+  void throwCityToDB(val) async {
     Box<WeatherModelObjectBox> weatherData =
         objectBox.store.box<WeatherModelObjectBox>();
 
@@ -110,14 +111,14 @@ class SplashComponents {
         id: 0,
         latitude: 0,
         longitude: 0,
-        city: inputController.text.trim(),
+        city: val.trim(),
         tempInC: true,
         theme: isDarkMode ? 'dark' : 'light');
 
     weatherData.put(model);
   }
 
-  void updateCityinDB() async {
+  void updateCityinDB(val) async {
     Box<WeatherModelObjectBox> weatherData =
         objectBox.store.box<WeatherModelObjectBox>();
 
@@ -127,14 +128,14 @@ class SplashComponents {
         id: 1,
         latitude: 0,
         longitude: 0,
-        city: inputController.text.trim(),
+        city: val.trim(),
         tempInC: true,
         theme: isDarkMode ? 'dark' : 'light');
 
     weatherData.put(model);
   }
 
-  Future<dynamic> showManualDialog(context, String errorText, bool update) {
+  Future<dynamic> showManualDialog(context, String errorText, bool update , TextEditingController inputController ) {
     return showDialog(
       barrierDismissible: update,
       context: context,
@@ -168,7 +169,7 @@ class SplashComponents {
                         child: TextField(
                           style: context.textTheme.bodySmall,
                           onSubmitted: (val) {
-                            update ? updateCityinDB() : throwCityToDB();
+                            update ? updateCityinDB(inputController.text.trim()) : throwCityToDB(inputController.text.trim());
 
                             Get.offAllNamed('/home');
                           },
@@ -194,7 +195,7 @@ class SplashComponents {
                       padding: const EdgeInsets.only(bottom: 20.0),
                       child: InkWell(
                         onTap: () {
-                          update ? updateCityinDB() : throwCityToDB();
+                          update ? updateCityinDB(inputController.text.trim()) : throwCityToDB(inputController.text.trim());
 
                           Get.offAllNamed('/home');
                         },

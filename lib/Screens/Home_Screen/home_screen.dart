@@ -13,7 +13,6 @@ import '../../models/object_box_model.dart';
 import '../../models/weather_model_new.dart';
 import '../../utils/api_call.dart';
 import '../../utils/page_routes.dart';
-import '../Splash_Screen/splash_screen_components.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   WeatherModel? data;
-
+  TextEditingController inputController = TextEditingController();
   bool isLifted = false;
 
   @override
@@ -35,27 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   apiData() async {
-
- try {
-
-   Box<WeatherModelObjectBox> weatherData =
-        objectBox.store.box<WeatherModelObjectBox>();
-    if (weatherData.get(1)!.longitude != 0) {
-      data = await Api().getDataByLat(
-          weatherData.get(1)!.latitude, weatherData.get(1)!.longitude);
-    } else {
-      data = await Api().getDataByCity(weatherData.get(1)!.city, context);
-    }
-    setState(() {});
-
- } catch (e) {
-
-   Get.find<HomeController>().addError(true);
-        SplashComponents().showManualDialog(context, "Error! Location Not Found", true);
-        
-
- }
-
+      Box<WeatherModelObjectBox> weatherData =
+          objectBox.store.box<WeatherModelObjectBox>();
+      if (weatherData.get(1)!.longitude != 0) {
+        data = await Api().getDataByLat(weatherData.get(1)!.latitude,
+            weatherData.get(1)!.longitude, context, inputController);
+      } else {
+        data = await Api()
+            .getDataByCity(weatherData.get(1)!.city, context, inputController);
+      }
+      setState(() {});
 
   }
 
@@ -103,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: isLifted
                                   ? dayDetails(context, size)
                                   : Column(
+                                      key: const Key("2"),
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
@@ -154,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Column dayDetails(BuildContext context, Size size) {
     return Column(
+      key: const Key("1"),
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 30.0, right: 20, left: 20),
