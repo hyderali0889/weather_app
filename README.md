@@ -1,6 +1,6 @@
 # Weather App
 
-A Flutter Application is created by Hayder Ali as a portfolio project. This App is a proper Weather App which is ads free and very simple to use.
+A Flutter Application created by Hayder Ali as a portfolio project. This App is a proper Weather App which is ads free and very simple to use.
 
 ## Getting Started
 
